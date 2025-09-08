@@ -1,10 +1,12 @@
 import './App.css';
+import ShorteningInput from './ShorteningInput';
 
 
-function App() {
+
+function App () {
   return (
-    <div className="container">
-      
+    <div className="Container">
+      <ShorteningInput/> 
     </div>
   );
 }
