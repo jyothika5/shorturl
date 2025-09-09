@@ -39,9 +39,9 @@ useEffect(() => {
     return <p className="noData">Loading...</p>;
   }
 
-  if (error) {
-    return <p className="noData">Something went wrong. Please check your URL and try again.</p>;
-  }
+  // if (error) {
+  //   return <p className="noData">Something went wrong. Please check your URL and try again.</p>;
+  // }
 
   return (
     <>
