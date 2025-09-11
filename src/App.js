@@ -2,6 +2,7 @@ import './App.css';
 import { useState } from 'react';
 import BackAnimate from './BackAnimate';
 import ResultLink from './ResultLink';
+
 import ShorteningInput from './ShorteningInput';
 
 function App () {
@@ -10,7 +11,7 @@ function App () {
     <div className="Container">
       <ShorteningInput setInputValue={setInputValue}/> 
       <BackAnimate />
-      <ResultLink  inputValue={inputValue} />
+      <ResultLink inputValue={inputValue}/>
     </div>
   );
 }
