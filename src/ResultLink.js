@@ -1,47 +1,46 @@
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react"
 import CopyToClipboard from "react-copy-to-clipboard";
-import axios from 'axios';
 
-const ResultLink = ({ inputValue }) => {
+const ResultLin = ({ inputValue }) => {
   const [shortenLink, setShortenLink] = useState("");
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
-useEffect(() => {
-  const fetchData = async () => { 
+  const fetchData = async () => {
     try {
       setLoading(true);
-      setError(null);
       const res = await axios(`https://api.shrtco.de/v2/shorten?url=${inputValue}`);
       setShortenLink(res.data.result.full_short_link);
-    } catch (err) {
+    } catch(err) {
       setError(err);
     } finally {
       setLoading(false);
     }
-  };
-
-  if (inputValue) {
-    fetchData();
   }
-}, [inputValue]); 
+
   useEffect(() => {
-    if (copied) {
-      const timer = setTimeout(() => {
-        setCopied(false);
-      }, 1000);
-      return () => clearTimeout(timer);
+    if(inputValue.length) {
+      fetchData();
     }
+  }, [inputValue]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, [copied]);
 
-  if (loading) {
-    return <p className="noData">Loading...</p>;
+  if(loading) {
+    return <p className="noData">Loading...</p>
+  }
+  if(error) {
+    return <p className="noData">Something wne t wrong :(</p>
   }
 
-  // if (error) {
-  //   return <p className="noData">Something went wrong. Please check your URL and try again.</p>;
-  // }
 
   return (
     <>
@@ -52,14 +51,12 @@ useEffect(() => {
             text={shortenLink}
             onCopy={() => setCopied(true)}
           >
-            <button className={copied ? "copied" : ""}>
-              {copied ? "Copied!" : "Copy link to Clipboard"}
-            </button>
+            <button className={copied ? "copied" : ""}>Copy to Clipboard</button>
           </CopyToClipboard>
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default ResultLink;
+export default ResultLink
