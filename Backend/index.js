@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import { nanoid } from 'nanoid';
+import QRCode from 'qrcode';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -29,8 +30,10 @@ app.post('/api/short', async (req, res) => {
         }
         const shortUrl = nanoid(8);
         const url= new Url({ originalUrl, shortUrl });
+        const myUrl=`http://localhost:3000/${shortUrl}`;
+        const qrImg=await QRCode.toDataURL(myUrl);
         await url.save();
-        return res.status(200).json({ message: "Short URL created successfully", url:url });
+        return res.status(200).json({ message: "Short URL created successfully",shortUrl: myUrl, qrImg });
     }
     catch(error){
         console.log(error);

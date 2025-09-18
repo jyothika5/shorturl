@@ -8,8 +8,8 @@ export default function App() {
   const handleSubmit = () => {
     axios.post("http://localhost:3000/api/short", { originalUrl })
       .then((res) =>{
-        setShortUrl(res.data.url.shortUrl);
-        console.log("API Response:",res.data,url,shortUrl)
+        setShortUrl(res.data);
+        console.log("API Response:",res.data);
       })
       .catch((err) => console.error("API Error:", err));
   
@@ -152,10 +152,14 @@ export default function App() {
           </div>
           {shortUrl && (
             <div className="result-box">
-              <a href={'http://localhost:3000/${shortUrl}'}
-               target="_blank">
-                {shortUrl}
+              <a 
+               href={shortUrl?.shortUrl}
+               rel="noopener noreferrer"
+               target="_blank"
+              >
+                {shortUrl?.shortUrl}
               </a>
+              {shortUrl && <img src={shortUrl.qrImg} alt="generated qr code"/>}
             </div>
           )}
         </div>
