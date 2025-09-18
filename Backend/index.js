@@ -24,7 +24,9 @@ const Url = mongoose.model('Url', urlSchema);
 app.post('/api/short', async (req, res) => {
     try{
         const { originalUrl } = req.body;
-        if(!originalUrl) return res.status(400).json({ error: "originalUrl is required" });
+        if(!originalUrl){
+            return res.status(400).json({ error: "originalUrl is required" });
+        }
         const shortUrl = nanoid(8);
         const url= new Url({ originalUrl, shortUrl });
         await url.save();
@@ -48,10 +50,10 @@ app.get('/:shortUrl', async (req, res)=>{
         else{
             return res.status(404).json({ error: "URL not found" });
         }
-
     }
     catch(error){
         console.log(error);
+        res.status(500).json({ error: "server error" });
     }
 
 })
