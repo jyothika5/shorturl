@@ -1,12 +1,18 @@
 import { useState } from "react";
+import axios from "axios";
 
 export default function App() {
   const [originalUrl, setOriginalUrl] = useState("");
-  const [shortenedUrl, setShortenedUrl] = useState("");
+  const [shortUrl, setShortUrl] = useState("");
 
   const handleSubmit = () => {
-    console.log(originalUrl);
-    setShortenedUrl("https://short.url/" + Math.random().toString(36).substring(2, 8));
+    axios.post("http://localhost:3000/api/short", { originalUrl })
+      .then((res) =>{
+        setShortUrl(res.data.url.shortUrl);
+        console.log("API Response:",res.data,url,shortUrl)
+      })
+      .catch((err) => console.error("API Error:", err));
+  
   };
 
   return (
@@ -124,7 +130,7 @@ export default function App() {
         .result-box a {
           color: #312e81;
           text-decoration: none;
-        }
+        } 
         `}
       </style>
       <div className="app-container">
@@ -144,10 +150,11 @@ export default function App() {
               Shorten
             </button>
           </div>
-          {shortenedUrl && (
+          {shortUrl && (
             <div className="result-box">
-              <a href={shortenedUrl} target="_blank" rel="noopener noreferrer">
-                {shortenedUrl}
+              <a href={'http://localhost:3000/${shortUrl}'}
+               target="_blank">
+                {shortUrl}
               </a>
             </div>
           )}
